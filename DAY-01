@@ -1,0 +1,139 @@
+SQL> create table employee(Eid int, Ename varchar2(20), Address varchar2(20));
+
+Table created.
+
+SQL> desc employee;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EID                                                NUMBER(38)
+ ENAME                                              VARCHAR2(20)
+ ADDRESS                                            VARCHAR2(20)
+
+SQL> alter table employee add Gender varchar2(10);
+
+Table altered.
+
+SQL> desc employee;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EID                                                NUMBER(38)
+ ENAME                                              VARCHAR2(20)
+ ADDRESS                                            VARCHAR2(20)
+ GENDER                                             VARCHAR2(10)
+
+SQL> alter table employee drop column gender;
+
+Table altered.
+
+SQL> desc employee;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EID                                                NUMBER(38)
+ ENAME                                              VARCHAR2(20)
+ ADDRESS                                            VARCHAR2(20)
+
+SQL> alter table employee modify Eid to varchar2(20);
+alter table employee modify Eid to varchar2(20)
+                                *
+ERROR at line 1:
+ORA-00902: invalid datatype
+
+
+SQL> alter table employee modify Eid varchar2(20);
+
+Table altered.
+
+SQL> desc employee;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EID                                                VARCHAR2(20)
+ ENAME                                              VARCHAR2(20)
+ ADDRESS                                            VARCHAR2(20)
+
+SQL> -- rename
+SQL> alter table employee rename column Eid to Employee_ID;
+
+Table altered.
+
+SQL> desc employee;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMPLOYEE_ID                                        VARCHAR2(20)
+ ENAME                                              VARCHAR2(20)
+ ADDRESS                                            VARCHAR2(20)
+
+SQL> drop table employee;
+
+Table dropped.
+
+SQL> desc employee;
+ERROR:
+ORA-04043: object employee does not exist
+
+
+SQL> create table employee (Eid int, Ename varchar(20), Address varchar2(30), phone number(10));
+
+Table created.
+
+SQL> -- Insert values;
+SQL> insert into employee values(&Eid, '&Ename', '&Address', &Phone);
+Enter value for eid: 001
+Enter value for ename: varshith
+Enter value for address: martur
+Enter value for phone: 9014561315
+old   1: insert into employee values(&Eid, '&Ename', '&Address', &Phone)
+new   1: insert into employee values(001, 'varshith', 'martur', 9014561315)
+
+1 row created.
+
+SQL> /
+Enter value for eid: 002
+Enter value for ename: dummy
+Enter value for address: dummy-1
+Enter value for phone: 999999999
+old   1: insert into employee values(&Eid, '&Ename', '&Address', &Phone)
+new   1: insert into employee values(002, 'dummy', 'dummy-1', 999999999)
+
+1 row created.
+
+SQL> select * from employee;
+
+       EID ENAME                ADDRESS                             PHONE
+---------- -------------------- ------------------------------ ----------
+         1 varshith             martur                         9014561315
+         2 dummy                dummy-1                         999999999
+
+SQL> -- We will try to change the Eid to varchar2(10) --> it will give us error
+SQL> alter table employee modify eid varchar2(10);
+alter table employee modify eid varchar2(10)
+                            *
+ERROR at line 1:
+ORA-01439: column to be modified must be empty to change datatype
+
+
+SQL> -- error meaning --> we have to make the pre-occupied data to null before we proceed to change datatype
+SQL>
+SQL> update employee SET Eid = null;
+
+2 rows updated.
+
+SQL> -- now we can modify
+SQL>
+SQL> alter table employee modify eid varchar2(10);
+
+Table altered.
+
+SQL> desc employee;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EID                                                VARCHAR2(10)
+ ENAME                                              VARCHAR2(20)
+ ADDRESS                                            VARCHAR2(30)
+ PHONE                                              NUMBER(10)
+
+SQL> select * from Employee;
+
+EID        ENAME                ADDRESS                             PHONE
+---------- -------------------- ------------------------------ ----------
+           varshith             martur                         9014561315
+           dummy                dummy-1                         999999999
